@@ -56,11 +56,14 @@ feeValue = (totalETH_fees*currentPrice)+totalUSD_fees
 print("Total Balance Value: ", balValue)
 print("Total Fees Value:     ", feeValue)
 print("Fees in {%} Gain: ", (feeValue/balValue) *100)
-print("Value Sum: ", balValue+feeValue)
+sumVal = balValue+feeValue
+print("Value Sum: ", sumVal)
+holdStillVal = (hodlValueEth*currentPrice)+hodlValueUSD
+print("Holding Still Value: ", holdStillVal)
 print()
-print("Holding Still Value: ", (hodlValueEth*currentPrice)+hodlValueUSD)
+print("Testing for impermanent loss: Negative = IL, Positive = IG")
+print("IL/IG: ",(1-(holdStillVal/sumVal))*100)
 
-        
         
 
 
