@@ -35,11 +35,11 @@ The first graph illustrates the reserve balances of ETH and USD for the liquidit
 
 We further visualized these positions with an additional graph showing the trading fees collected, highlighting the correlation between reserve balances and trading fee outcomes.
 
-##### CPAMM/neutral DPAMM
+##### CPAMM/neutral DPAMM position
 
 ![neutral](./graph/CPAMM_Reserve.png)
 
-##### Variations of DPAMM
+##### DPAMM positions (directionalX, directionalY, neutral)
 
 ![result](./graph/Result.png)
 
