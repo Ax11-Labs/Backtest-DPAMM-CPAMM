@@ -22,30 +22,35 @@ totalUSD_fees = 0
 def startCPAMM(nextPrice):
     global ethBalance, usdBalance,currentPrice,totalETH_fees, totalUSD_fees 
     DeltaPrice = nextPrice/currentPrice
+    newEthBalance=ethBalance/DeltaPrice
 
     # We assume the worst case where there is no trade that not changing the price,
     # so DeltaPrice = 0 is skipped
     #Eth price increases
     if DeltaPrice > 1: # eth-out, usd-in
-        newEthBalance=ethBalance/DeltaPrice
+        ethOut = ethBalance - newEthBalance 
         ethBalance = newEthBalance
         newUsdBalance = k/ethBalance
-        usdIn = newUsdBalance - usdBalance
+        # usdIn = newUsdBalance - usdBalance
+        # totalUSD_fees += usdIn*fee_rate
+        totalETH_fees += ethOut*fee_rate
         usdBalance = newUsdBalance
-        totalUSD_fees += usdIn*fee_rate
         currentPrice  = nextPrice
     #Eth price decreases
     elif DeltaPrice < 1: #eth-in, usd-out
-        newEthBalance=ethBalance/DeltaPrice
-        ethIn =  newEthBalance - ethBalance
+        # ethIn =  newEthBalance - ethBalance
         ethBalance = newEthBalance
-        usdBalance = k/ethBalance
-        totalETH_fees += ethIn*fee_rate
+        newUsdBalance = k/ethBalance
+        usdOut = usdBalance - newUsdBalance 
+        usdBalance=newUsdBalance
+        totalUSD_fees+=usdOut*fee_rate
+        # totalETH_fees += ethIn*fee_rate
         currentPrice  = nextPrice
 
 for i in reversed(range(len(close_prices_list)-1)):
     startCPAMM(close_prices_list[i])
-
+    
+print("---------------------------")
 print("Current ETH Price: ", currentPrice)
 print("ETH Balance: ", ethBalance)
 print("USD Balance", usdBalance)
@@ -55,14 +60,22 @@ balValue = (ethBalance*currentPrice)+usdBalance
 feeValue = (totalETH_fees*currentPrice)+totalUSD_fees
 print("Total Balance Value: ", balValue)
 print("Total Fees Value:     ", feeValue)
-print("Fees in {%} Gain: ", (feeValue/balValue) *100)
+# print("Fees in {%} Gain: ", (feeValue/balValue) *100)
+print()
+print("---------------------------")
 sumVal = balValue+feeValue
 print("Value Sum: ", sumVal)
 holdStillVal = (hodlValueEth*currentPrice)+hodlValueUSD
 print("Holding Still Value: ", holdStillVal)
 print()
+print("---------------------------")
 print("Testing for impermanent loss: Negative = IL, Positive = IG")
-print("IL/IG: ",(1-(holdStillVal/sumVal))*100)
+impermaLoss = (1-(holdStillVal/sumVal))*100
+if impermaLoss > 0:
+    des = "Impermanent Gain(+): "
+else:
+    des = "Impermanent Loss(-): "
+print(des,impermaLoss,"percent")
 
         
 
