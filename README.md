@@ -23,7 +23,7 @@ Finally, we investigate whether it matters for exchanges to collect trading fees
 We retrieved the price of ETH/USD from a centralized exchange in `.csv` format.
 
 - Exchange: [Bitget](https://www.bitget.com/)
-- Data Used: Feb 7,2021 - Nov 17, 2024
+- Data Used: Jan 1,2021 - Nov 17, 2024
 - Format: `.csv`
 - Price selection: Close price of each day
 
